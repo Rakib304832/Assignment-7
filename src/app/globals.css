@@ -24,3 +24,14 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.marquee-track {
+  display: flex;                          /* আইটেমগুলো পাশাপাশি বসায় */
+  width: max-content;                     /* কনটেন্ট যত বড়, ট্র্যাক তত বড় */
+  animation: marquee 60s linear infinite; /* 60s = গতি, বাড়ালে ধীরে চলবে */
+}
+
+
+@keyframes marquee {
+  from { transform: translateX(0); }      /* শুরুর অবস্থান */
+  to   { transform: translateX(-50%); }   /* অর্ধেক সরলে লুপ, কারণ items দুইবার আছে */
+}

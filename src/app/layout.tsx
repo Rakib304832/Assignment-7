@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./component/Header";
 import PriceTicker from "./component/PriceTicker";
+import Banner from "./component/Banner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col container mx-auto" cz-shortcut-listen="true" >
         <Header />
         <PriceTicker/>
+        <Banner/>
         {children}
       </body>
     </html>

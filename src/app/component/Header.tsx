@@ -10,18 +10,12 @@ import Navlink from "./Navlink";
 
 export default function Header() {
   const [openPath, setOpenPath] = useState<string | null>(null);
-  const [today, setToday] = useState("");
-
-  useEffect(() => {
-    setToday(
-      new Date().toLocaleDateString("bn-BD", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    );
-  }, []);
+ const today = new Date().toLocaleDateString("bn-BD", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const pathname = usePathname();
   const { data: session } = useSession();
