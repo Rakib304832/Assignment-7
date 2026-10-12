@@ -1,6 +1,4 @@
-// Reuse the nested shape from the API so types match the real data.
-
-import MarqueeText from "react-marquee-text"
+import { connection } from "next/dist/server/web/exports";
 
 type PriceChange = { dir: "up" | "down" | "flat"; pct: number };
 
@@ -17,6 +15,7 @@ interface Item {
 }
 
 export default async function PriceTicker() {
+  await connection();
   const res = await fetch(
     "https://api.abcz.workers.dev/api/bazardor/products",
     { cache: "no-store" } // always fresh prices

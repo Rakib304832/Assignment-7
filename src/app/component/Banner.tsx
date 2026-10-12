@@ -1,12 +1,6 @@
 import Image from "next/image";
 import Link from "next/link"; 
-
-const today = new Date().toLocaleDateString("bn-BD", { 
-  weekday: "long", 
-  day: "numeric", 
-  month: "long",   
-  year: "numeric", 
-});
+import TodayDate from "./TodayDate";
 
 const Banner = () => { 
   return (
@@ -14,12 +8,9 @@ const Banner = () => {
       <div className="flex flex-col-reverse items-center justify-between gap-6 rounded-3xl bg-gray-100 p-6 md:flex-row md:p-10"> 
 
         <div className="flex-1"> 
-          <span
+          <TodayDate
             className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700" 
-            suppressHydrationWarning 
-          >
-            {today} 
-          </span>
+          />
 
           <h1 className="mt-4 text-3xl font-extrabold text-gray-900 md:text-5xl"> 
             আজকের বাজারের দাম এক নজরে

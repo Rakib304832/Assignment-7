@@ -1,21 +1,17 @@
 "use client";
 
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { signOut, useSession } from "@/lib/auth-client";
 import Navlink from "./Navlink";
+import TodayDate from "./TodayDate";
 
 export default function Header() {
   const [openPath, setOpenPath] = useState<string | null>(null);
- const today = new Date().toLocaleDateString("bn-BD", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -50,7 +46,9 @@ export default function Header() {
               className="block py-2 text-sm hover:text-green-700"
             >
               আমার প্রোফাইল
+              
             </Link>
+          
             <button
               type="button"
               onClick={() => {
@@ -83,9 +81,7 @@ export default function Header() {
           </span>
           <span>
             <span className="block text-lg font-bold leading-tight">বাজার দর</span>
-            <span className="block text-xs text-gray-500" suppressHydrationWarning>
-              {today}
-            </span>
+            <TodayDate className="block text-xs text-gray-500" />
           </span>
         </Link>
 
@@ -93,11 +89,11 @@ export default function Header() {
           sessionMenu
         ) : (
           <div className="flex items-center gap-3 text-sm">
-            <Link href="/signin" className="font-medium">
+            <Link href="/component/Signin" className="font-medium">
               সাইন ইন
             </Link>
             <Link
-              href="/signup"
+              href="/component/Signup"
               className="rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700"
             >
               সাইন আপ
