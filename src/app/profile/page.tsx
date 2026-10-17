@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const { data: session, isPending } = authClient.useSession(); // ইউজারের সেশন
 
   useEffect(() => {
-    if (!isPending && !session) router.push("/signin"); // লগইন না থাকলে signin এ পাঠাও
+    if (!isPending && !session) router.push("/component/signin"); // লগইন না থাকলে signin এ পাঠাও
   }, [isPending, session, router]);
 
   if (!session) return <p className="p-6">লোড হচ্ছে...</p>; // সেশন আসার আগে লোডিং

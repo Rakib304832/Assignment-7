@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./component/Header";
+import HomeProducts from "./component/HomeProducts"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col container mx-auto" cz-shortcut-listen="true" >
         <Suspense fallback={<div className="h-14 border-b border-gray-200 bg-white" />}>
           <Header />
+          <HomeProducts products={[]} />
         </Suspense>
         
         {children}
