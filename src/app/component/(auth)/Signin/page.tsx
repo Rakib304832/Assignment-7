@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa"
 
 const inputClass =
   "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-green-600";
@@ -13,6 +15,32 @@ export default function SignInPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const handleSocial = async (provider: "google" | "github") => {
+    setErrorMessage(null);
+
+    try {
+      const { error } = await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        console.log("error: ", error)
+        setErrorMessage(error.message ?? "সোশ্যাল সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+        return;
+      }
+
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "সার্ভারের সঙ্গে যোগাযোগ করা যায়নি। আবার চেষ্টা করুন।"
+      );
+    }
+  };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -70,6 +98,7 @@ export default function SignInPage() {
           >
             <Label className="text-sm font-semibold">ইমেইল</Label>
             <Input
+              name="email"
               className={inputClass}
               autoComplete="email"
               placeholder="you@example.com"
@@ -85,6 +114,7 @@ export default function SignInPage() {
           >
             <Label className="text-sm font-semibold">পাসওয়ার্ড</Label>
             <Input
+              name="password"
               className={inputClass}
               autoComplete="current-password"
               placeholder="আপনার পাসওয়ার্ড লিখুন"
@@ -105,6 +135,35 @@ export default function SignInPage() {
           >
             {isSubmitting ? "সাইন ইন হচ্ছে..." : "সাইন ইন"}
           </Button>
+
+          <div className="flex items-center gap-3 text-sm text-gray-400">
+            <span className="h-px flex-1 bg-gray-200" />
+            অথবা
+            <span className="h-px flex-1 bg-gray-200" />
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              onPress={() => handleSocial("google")}
+              className="flex-1 rounded-xl border border-gray-200 bg-white py-3 font-medium text-gray-700"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <FcGoogle size={20} />
+                Google
+              </span>
+            </Button>
+            <Button
+              type="button"
+              onPress={() => handleSocial("github")}
+              className="flex-1 rounded-xl border border-gray-200 bg-white py-3 font-medium text-gray-700"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <FaGithub size={20} />
+                GitHub
+              </span>
+            </Button>
+          </div>
 
           <p className="text-center text-sm text-gray-600">
             অ্যাকাউন্ট নেই?{" "}

@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 // Shared input style so all four fields look identical without repeating classes
 const inputClass =
@@ -15,6 +17,31 @@ export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const handleSocial = async (provider: "google" | "github") => {
+    setErrorMessage(null);
+
+    try {
+      const { error } = await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        setErrorMessage(error.message ?? "সোশ্যাল সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+        return;
+      }
+
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "সার্ভারের সঙ্গে যোগাযোগ করা যায়নি। আবার চেষ্টা করুন।"
+      );
+    }
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,7 +93,7 @@ export default function SignUpPage() {
           {/* Name */}
           <TextField isRequired name="name" type="text" className="flex flex-col gap-1.5">
             <Label className="text-sm font-semibold">নাম</Label>
-            <Input className={inputClass} placeholder="যেমন: রহিম উদ্দিন" />
+            <Input name="name" className={inputClass} placeholder="যেমন: রহিম উদ্দিন" />
             <FieldError />
           </TextField>
 
@@ -85,7 +112,7 @@ export default function SignUpPage() {
             }}
           >
             <Label className="text-sm font-semibold">ইমেইল</Label>
-            <Input className={inputClass} placeholder="you@example.com" />
+            <Input name="email" className={inputClass} placeholder="you@example.com" />
             <FieldError />
           </TextField>
 
@@ -105,7 +132,7 @@ export default function SignUpPage() {
             }}
           >
             <Label className="text-sm font-semibold">পাসওয়ার্ড</Label>
-            <Input className={inputClass} placeholder="কমপক্ষে ৮ অক্ষর" />
+            <Input name="password" className={inputClass} placeholder="কমপক্ষে ৮ অক্ষর" />
             <FieldError />
           </TextField>
 
@@ -122,7 +149,7 @@ export default function SignUpPage() {
             }}
           >
             <Label className="text-sm font-semibold">পাসওয়ার্ড নিশ্চিত করুন</Label>
-            <Input className={inputClass} placeholder="আবার লিখুন" />
+            <Input name="confirmPassword" className={inputClass} placeholder="আবার লিখুন" />
             <FieldError />
           </TextField>
 
@@ -140,6 +167,35 @@ export default function SignUpPage() {
               {errorMessage}
             </p>
           )}
+
+          <div className="flex items-center gap-3 text-sm text-gray-400">
+            <span className="h-px flex-1 bg-gray-200" />
+            অথবা
+            <span className="h-px flex-1 bg-gray-200" />
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              onPress={() => handleSocial("google")}
+              className="flex-1 rounded-xl border border-gray-200 bg-white py-3 font-medium text-gray-700"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <FcGoogle size={20} />
+                Google
+              </span>
+            </Button>
+            <Button
+              type="button"
+              onPress={() => handleSocial("github")}
+              className="flex-1 rounded-xl border border-gray-200 bg-white py-3 font-medium text-gray-700"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <FaGithub size={20} />
+                GitHub
+              </span>
+            </Button>
+          </div>
 
           {/* Link for users who already registered */}
           <p className="text-center text-sm text-gray-600">

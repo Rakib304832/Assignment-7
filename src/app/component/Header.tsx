@@ -21,6 +21,7 @@ export default function Header() {
   const userName = session?.user?.name ?? "User";
   const firstName = userName.split(" ")[0] || userName;
   const firstLetter = firstName.trim().charAt(0).toUpperCase() || "U";
+  const userImage = session?.user?.image;
 
   const sessionMenu = useMemo(
     () => (
@@ -30,9 +31,19 @@ export default function Header() {
           className="flex items-center gap-2 text-sm font-medium"
           type="button"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-green-100 text-green-700">
+        {userImage ? (
+          <Image
+            src={userImage}
+            alt="Avatar"
+            width={32}
+            height={32}
+            unoptimized
+            referrerPolicy="no-referrer"
+            className="h-8 w-8 rounded-full object-cover"
+          />
+        ) : (<span className="grid h-8 w-8 place-items-center rounded-full bg-green-100 text-green-700">
             {firstLetter}
-          </span>
+          </span>)}
           {firstName} ▾
         </button>
 
@@ -59,11 +70,12 @@ export default function Header() {
             >
               সাইন আউট
             </button>
+
           </div>
         )}
       </div>
     ),
-    [firstLetter, firstName, open, pathname, session?.user?.email, userName]
+    [firstLetter, firstName, open, pathname, session?.user?.email, userName,  userImage]
   );
 
   return (

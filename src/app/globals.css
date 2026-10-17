@@ -29,8 +29,17 @@ body {
 .marquee-track {
   display: flex;                          /* আইটেমগুলো পাশাপাশি বসায় */
   width: max-content;                     /* কনটেন্ট যত বড়, ট্র্যাক তত বড় */
-  animation: marquee 60s linear infinite; /* 60s = গতি, বাড়ালে ধীরে চলবে */
+  animation: marquee 60s linear infinite;
+   /* 60s = গতি, বাড়ালে ধীরে চলবে */
 }
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+.marquee-wrapper:hover .marquee-track { /* পুরো ticker এলাকায় মাউস গেলেই থামবে, শুধু আইটেমের উপরে নয় */
+  animation-play-state: paused; /* wrapper-এ hover করলে ভেতরের ট্র্যাকের অ্যানিমেশন থামানোর জন্য */
+}
+
+
 
 
 @keyframes marquee {
