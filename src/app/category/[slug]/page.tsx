@@ -10,12 +10,31 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   ]);
 
   return (
-    <div className="mx-auto max-w-5xl p-6"> {/* কন্টেন্ট মাঝখানে */}
-      <div className="rounded-xl border bg-white p-5 shadow-sm"> {/* উপরের কার্ড */}
-        <h1 className="text-2xl font-bold">{cat.icon} {cat.nameBn}</h1> {/* ক্যাটাগরির আইকন ও নাম */}
-        <p className="text-sm text-gray-500">মোট {bn(products.length)}টি পণ্যের আজকের দাম ও পরিবর্তন</p> {/* ভিডিওর উপশিরোনাম, সংখ্যা API থেকে গুনে নেওয়া */}
+    <div className="my-6 px-4 max-w-7xl mx-auto">
+      {/* তালিকা ও ড্রপডাউন এই client component সামলায় */}
+      {/* Banner */}
+      <div className="bg-[#FAFCFA] border border-[#E1E8E1] rounded-2xl p-4 sm:p-5 mb-6 shadow-sm">
+        <div className="flex items-center gap-3">
+          {/* Icon */}
+          <div className="shrink-0 flex items-center justify-center w-12 h-12 bg-[#F0F5F0] rounded-xl text-3xl sm:text-4xl">
+            {cat?.icon || "📦"}
+          </div>
+
+          {/* Category Info */}
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#1D271F]">
+              {cat?.nameBn || "ক্যাটাগরি"}
+            </h2>
+
+            <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
+              মোট <span className="font-semibold text-gray-800">{bn(products.length)}টি পণ্যের আজকের দাম ও পরিবর্তন</span>
+            </p>
+          </div>
+        </div>
       </div>
-      <ProductGrid products={products} /> {/* তালিকা ও ড্রপডাউন এই client component সামলায় */}
+
+      {/* Sort + Product List */}
+      <ProductGrid products={products} /> 
     </div>
   );
 }

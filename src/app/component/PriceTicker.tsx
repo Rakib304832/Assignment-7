@@ -1,4 +1,5 @@
 import { connection } from "next/dist/server/web/exports";
+import Link from "next/link";
 
 type PriceChange = { dir: "up" | "down" | "flat"; pct: number };
 
@@ -38,8 +39,9 @@ export default async function PriceTicker() {
           const { dir, pct } = it.change;
 
           return (
-            <div
+            <Link
               key={`${it.id}-${i}`}
+              href={`/productdetails/${it.id}`}
               className="mx-6 flex shrink-0 items-center gap-2"
             >
               <span>{it.categoryIcon}</span>
@@ -58,7 +60,7 @@ export default async function PriceTicker() {
               >
                 {dir === "up" ? "▲" : dir === "down" ? "▼" : "–"} {Math.abs(pct)}%
               </span>
-            </div>
+            </Link>
           );
         })}
       </div>

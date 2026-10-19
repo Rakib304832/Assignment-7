@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./component/Header";
-import HomeProducts from "./component/HomeProducts"
+import PriceTicker from "./component/PriceTicker";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +28,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col container mx-auto" cz-shortcut-listen="true" >
+        
         <Suspense fallback={<div className="h-14 border-b border-gray-200 bg-white" />}>
           <Header />
-          <HomeProducts products={[]} />
         </Suspense>
+        <Suspense fallback={<div className="h-8" aria-label="দাম লোড হচ্ছে" />}>
+        <PriceTicker />
+      </Suspense>
         
         {children}
+        
       </body>
     </html>
   );

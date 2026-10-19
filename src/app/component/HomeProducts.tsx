@@ -18,7 +18,7 @@ function Section({ title, arrow, color, items }: { title: string; arrow: string;
         {title}
       </h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"> {/* তিন কলামের গ্রিড */}
-        {items.map((p) => <ProductCard key={p.id} p={p} />)} {/* প্রতিটি পণ্যের কার্ড */}
+        {items.map((p) => <ProductCard key={p.id} product={p} />)} {/* প্রতিটি পণ্যের কার্ড */}
       </div>
     </section>
   );
@@ -30,9 +30,10 @@ export default function HomeProducts({ products }: { products: Product[] }) { //
       <Section title="আজ দাম বেড়েছে" arrow="▲" color="text-red-600" items={top6(products, "up")} /> {/* প্রথম অংশ */}
       <Section title="আজ দাম কমেছে" arrow="▼" color="text-green-600" items={top6(products, "down")} /> {/* দ্বিতীয় অংশ */}
       <div id="products" className="scroll-mt-24"> {/* Banner-এর বাটন এখানে স্ক্রল করবে */}
-        <ProductGrid products={products} title="সব পণ্য" subtitle={`মোট ${bn(products.length)}টি পণ্যের আজকের দর`} sortable={false} /> {/* হোমে ড্রপডাউন বন্ধ */}
+        <h2 className="text-lg font-bold">সব পণ্য</h2>
+        <p className="mt-1 text-sm text-gray-600">মোট {bn(products.length)}টি পণ্যের আজকের দর</p>
+        <ProductGrid products={products} />
       </div>
     </div>
   );
 }
-

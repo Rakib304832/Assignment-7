@@ -1,14 +1,22 @@
  import { BASE, bn } from "@/lib/api"; // API ঠিকানা ও বাংলা অঙ্ক
 import type { Product } from "@/lib/types"; // পণ্যের ধরন
+import { notFound } from "next/navigation"
 import PriceChange from "@/app/component/PriceChange"; // ▲▼ অংশ
 
 export default async function ProductDetails({ params }: { params: Promise<{ id: string }> }) { // সার্ভারে ডেটা আনব
   const { id } = await params; // URL থেকে পণ্যের id
-  const p: Product = await fetch(`${BASE}/products/${id}`, { cache: "no-store" }).then((r) => r.json()); // এই একটি পণ্যের ডেটা
+  const res = await fetch(`${BASE}/products/${id}`, { cache: "no-store" });
+  if (!res.ok)  notFound();
+  const p: Product = await res.json();
 
-  const low = Math.min(...p.markets.map((m) => m.min)); // সব বাজারের মধ্যে সবচেয়ে কম দাম
-  const high = Math.max(...p.markets.map((m) => m.max)); // সব বাজারের মধ্যে সবচেয়ে বেশি দাম
-  const avg = Math.round(p.markets.reduce((s, m) => s + (m.min + m.max) / 2, 0) / p.markets.length); // প্রতি বাজারের মাঝামাঝি দামের গড়; API সরাসরি গড় দেয় না তাই নিজে হিসাব
+ const mins = p.markets.map((m) => m.min);
+const maxs = p.markets.map((m) => m.max);
+const has = p.markets.length > 0;
+const low = has ? Math.min(...mins) : p.today;
+const high = has ? Math.max(...maxs) : p.today;
+const avg = has
+  ? Math.round(p.markets.reduce((s, m) => s + (m.min + m.max) / 2, 0) / p.markets.length)
+  : p.today; // প্রতি বাজারের মাঝামাঝি দামের গড়; API সরাসরি গড় দেয় না তাই নিজে হিসাব
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-6"> {/* অংশগুলোর মাঝে ফাঁক */}
@@ -40,7 +48,13 @@ export default async function ProductDetails({ params }: { params: Promise<{ id:
         <div className="overflow-x-auto rounded-xl border bg-white"> {/* ছোট পর্দায় টেবিল ভেঙে না গিয়ে স্ক্রল করতে */}
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-gray-500"> {/* হেডার সারি */}
-              <tr><th className="p-3">বাজার</th><th className="p-3">বিভাগ</th><th className="p-3">সর্বনিম্ন</th><th className="p-3">সর্বোচ্চ</th><th className="p-3">গড়</th></tr>
+              <tr>
+                <th className="p-3">বাজার</th>
+                <th className="p-3">বিভাগ</th>
+                <th className="p-3">সর্বনিম্ন</th>
+                <th className="p-3">সর্বোচ্চ</th>
+                <th className="p-3">গড়</th>
+              </tr>
             </thead>
             <tbody>
               {p.markets.map((m) => ( // প্রতিটি বাজারের জন্য একটি সারি
