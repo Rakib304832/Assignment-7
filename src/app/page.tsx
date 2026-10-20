@@ -19,7 +19,6 @@ async function ProductsSection() {
 export default function Home() {
   return (
     <div>
-      
       <Banner />
       <Suspense
         fallback={

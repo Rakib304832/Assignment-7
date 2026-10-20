@@ -1,17 +1,17 @@
-import { connection } from "next/dist/server/web/exports";
+import { connection } from "next/server";
 import Link from "next/link";
 
 type PriceChange = { dir: "up" | "down" | "flat"; pct: number };
 
 interface Item {
-  id: number; // React key
+  id: number;
   slug: string;
   nameBn: string;
   category: string;
   unit: string;
   today: number;
   categoryIcon: string;
-  // dir and pct live INSIDE change in the API response, not at the top level
+
   change: PriceChange;
 }
 
@@ -19,7 +19,7 @@ export default async function PriceTicker() {
   await connection();
   const res = await fetch(
     "https://api.abcz.workers.dev/api/bazardor/products",
-    { cache: "no-store" } // always fresh prices
+    { cache: "no-store" }
   );
 
   if (!res.ok) return <p>ডাটা লোড করা যায়নি</p>;

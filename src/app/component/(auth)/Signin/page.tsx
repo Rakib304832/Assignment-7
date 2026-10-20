@@ -26,7 +26,6 @@ export default function SignInPage() {
       });
 
       if (error) {
-        console.log("error: ", error)
         setErrorMessage(error.message ?? "সোশ্যাল সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
         return;
       }
@@ -82,8 +81,7 @@ export default function SignInPage() {
       <p className="mb-6 mt-1 text-sm text-gray-500">
         বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন
       </p>
-
-      <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+      <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
         <Form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
           <TextField
             isRequired
@@ -105,7 +103,6 @@ export default function SignInPage() {
             />
             <FieldError />
           </TextField>
-
           <TextField
             isRequired
             name="password"
@@ -121,13 +118,11 @@ export default function SignInPage() {
             />
             <FieldError />
           </TextField>
-
           {errorMessage && (
             <p role="alert" className="text-sm text-red-600">
               {errorMessage}
             </p>
           )}
-
           <Button
             type="submit"
             isDisabled={isSubmitting}
@@ -135,13 +130,11 @@ export default function SignInPage() {
           >
             {isSubmitting ? "সাইন ইন হচ্ছে..." : "সাইন ইন"}
           </Button>
-
           <div className="flex items-center gap-3 text-sm text-gray-400">
             <span className="h-px flex-1 bg-gray-200" />
             অথবা
             <span className="h-px flex-1 bg-gray-200" />
           </div>
-
           <div className="flex gap-3">
             <Button
               type="button"
@@ -164,7 +157,6 @@ export default function SignInPage() {
               </span>
             </Button>
           </div>
-
           <p className="text-center text-sm text-gray-600">
             অ্যাকাউন্ট নেই?{" "}
             <Link
@@ -176,7 +168,6 @@ export default function SignInPage() {
           </p>
         </Form>
       </div>
-
       <Link href="/" className="mt-6 text-sm text-gray-500 hover:text-gray-700">
         ← হোম পেজে ফিরে যান
       </Link>
