@@ -2,7 +2,16 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.MONGODB_URI!);
+// MongoClient parses the URI eagerly but only connects on first use, so fall
+// back to a placeholder when MONGODB_URI is missing (e.g. during `next build`)
+// instead of crashing at import time.
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  console.warn(
+    "MONGODB_URI is not set. Auth requests will fail until it is configured.",
+  );
+}
+const client = new MongoClient(mongoUri ?? "mongodb://127.0.0.1:27017");
 const db = client.db("better-auth");
 
 export const auth = betterAuth({
